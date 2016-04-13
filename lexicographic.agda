@@ -39,13 +39,6 @@ lemma1 [] = 0≤0
 lemma1 (x ∷ xs)  = xs≤ys (lemma1 xs) ≤′-refl
 -- using ≤′, this proof is EXTREMELY easy!
 
-{-
-lemma1 (x ∷ xs) with x <=B x | inspect (_<=B_ x) x
-lemma1 (x ∷ xs) | true | _ = lemma1 xs
-lemma1 (zero ∷ xs) | false | Reveal_·_is_.[ () ]
-lemma1 (suc x ∷ xs) | false | Reveal_·_is_.[ eq ] = {!!}
--}
-
 lemma2 : (x y : List ℕ) → x <= y → y <= x → x ≡ y
 lemma2 x y prf1 prf2 = {!!}
 
