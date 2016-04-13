@@ -1,0 +1,170 @@
+%定義
+
+%\input{setting}
+
+%\documentclass[11pt,twocolumn]{jarticle} 
+\documentclass[11pt,dvipdfmx]{jarticle} 
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{comment}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{euler}
+\usepackage{color}
+%\usepackage{theorem}
+%\usepackage{proof}
+\usepackage[deluxe]{otf}
+%\usepackage{mathptmx}
+
+%\newtheorem{def}{定義}[section]
+
+\pagestyle{empty}
+
+%余白とか
+
+\setlength{\topmargin}{-2cm} 
+\setlength{\textheight}{26.5cm} 
+\setlength{\textwidth}{18.5cm}
+\setlength{\oddsidemargin}{-1.3cm} 
+\setlength{\columnsep}{.5cm}
+\newcommand{\noin}{\noindent}
+\catcode`@=\active \def@{\hspace{0.9bp}-\hspace{0.9bp}}
+\theoremstyle{definition}
+\newtheorem{definition}{定義}[section]
+\newtheorem{proposition}{命題}[section]
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}{補題}[section]
+
+%タイトル
+\title{辞書式順序が整列順序であることの証明}
+\setcounter{footnote}{1}
+\author{原田 崇司\if0\thanks{神奈川大学大学院理学研究科情報科学先攻}\fi}
+\date{\today}
+\西暦
+
+%タイトル作成
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\section{整列順序}
+%\begin{def}
+% first definition
+%\end{def}
+集合$S$上の二項関係$\prec$が以下の四つの性質を満たす時，二項関係$\prec$は集合$S$上の整列順序関係である．
+\begin{enumerate}
+ \item $\forall x. \ x \in S \Rightarrow x \prec x$
+ \item $\forall x. \, \forall y. \ x \in S \Rightarrow y \in S \Rightarrow x \prec y \Rightarrow y \prec x \Rightarrow x = y$
+ \item $\forall x. \, \forall y. \, \forall z. \ x \in S \Rightarrow y \in S \Rightarrow z \in S \Rightarrow x \prec y \Rightarrow y \prec z \Rightarrow x \prec z$
+ \item $\forall A. \, (A \neq \emptyset \land A \subset S) \Rightarrow \exists u. \, u \in A \land \forall x \, (x \in A \Rightarrow u \prec x)$
+\end{enumerate}
+
+\section{辞書式順序}
+The Art of Computer Programming Volume1 の p.20 では，辞書式順序を下記のように定義している．
+
+\begin{definition}
+Let $S$ be well-ordered by $\prec$ and for $n > 0$ let $T_{n}$ be the set of all $n$--tuples $(x_{1}, x_{2}, \dots , x_{n})$ of elements $x_{j}$ in $S$. Define $(x_{1}, x_{2}, \dots, x_{n}) \prec (y_{1}, y_{2}, \dots, y_{n})$, if there is some $k$, $1 \leq k \leq n$, such that $x_{j} = y_{j}$ for $1 \leq j < k$, but $x_{k} \prec y_{k}$ in $S$. 
+ \label{dfn:lex}
+\end{definition}
+%%\begin{align*}
+上記の辞書式順序$\lhd_{n}$の定義を論理式で表すと下記のようになる．
+\begin{equation}
+%X \lhd_{n} Y \overset{\mathrm{def}}{=} \forall n. \, n \in \mathbb{N} \Rightarrow \exists k. \, k \in \mathbb{N} \land (1 \leq k \leq n) \land \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < k) \Rightarrow  x_{j} = y_{j} \Bigr) \land \Bigl( x_{k} \prec y_{k} \Bigr)
+X \lhd_{n} Y \overset{\mathrm{def}}{=} \exists k. \, k \in \mathbb{N} \land (1 \leq k \leq n) \land \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < k) \Rightarrow  x_{j} = y_{j} \Bigr) \land \Bigl( x_{k} \prec y_{k} \Bigr)
+\end{equation}
+%% & \forall n \in \mathbb{N} \ \exists k \Biggl( \biggl(1 \leq k \ \land \ k \leq n \biggr) \ \land \ \biggl( \forall j \ \Bigl( (1 \leq j \ \land \ j < k ) \Rightarrow x_{j} = y_{j} \Bigr) \ \land \ (x_{k} \prec y_{k}) \biggr) \Biggr)
+%%\end{align*}
+ただし，$X \equiv (x_{1}, x_{2}, \dots, x_{n}), Y \equiv (y_{1}, y_{2}, \dots, y_{n})$．
+
+\section{辞書式順序$\lhd_{n}$が整列順序であることの証明}
+辞書式順序$\lhd_{n}$が整列順序の性質4つを満たすことを命題3.1，命題3.2，命題3.3，命題3.4を示すことで示す．
+
+\begin{proposition}
+\[
+\forall X. \ X \in T_{n} \Rightarrow X \lhd_{n} X
+\]
+%ここで，$\mathscr{S}$は定義\ref{dfn:lex}にある$T_{n}$とする．
+\end{proposition}
+
+\begin{proof}
+\begin{equation}
+% \forall X. \ X \in \mathscr{S} \Rightarrow X \lhd_{n} X
+ \forall X. \ X \in T_{n} \Rightarrow X \lhd_{n} X
+ \label{eq:one}
+\end{equation}
+を示す．\par
+%\noindent $\mathscr{S}$の任意の要素$X^{'}$をとる．\par
+\noindent $T_{n}$の任意の要素$X^{'}$をとる．\par
+\begin{equation}
+ X^{'} \lhd_{n} X^{'}
+ \label{eq:one1}
+\end{equation}
+を示す．\par
+\noindent $\lhd_{n}$の定義より
+\begin{equation}
+\exists k. \, k \in \mathbb{N} \land (1 \leq k \leq n) \land \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < k) \Rightarrow  x_{j} = x_{j} \Bigr) \land \Bigl( x_{k} \prec x_{k} \Bigr)
+\end{equation}
+を示せばよい．\par
+\noindent $k$として$n$をとる．
+\begin{equation}
+\Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < n) \Rightarrow  x_{j} = x_{j} \Bigr) \land \Bigl( x_{n} \prec x_{n} \Bigr)
+ \label{eq:one2}
+\end{equation}
+を示す．\par
+\noindent (\ref{eq:one2})の$\land$の左側の命題は$S$上の$=$の反射律より正しく，$\land$の右側の命題は$S$上の$\prec$の反射律より正しいので，(\ref{eq:one1})は正しい．ここで，(\ref{eq:one1})の$X^{'}$は任意だったので(\ref{eq:one})が示された．
+\end{proof}
+
+\begin{proposition}
+\[
+\forall X. \ \forall Y. \ \ X \in T_{n} \Rightarrow Y \in T_{n} \Rightarrow X \lhd_{n} Y \Rightarrow Y \lhd_{n} X \Rightarrow X = Y
+\]
+%ここで，$T_{n}$は定義\ref{dfn:lex}にある$T_{n}$の全体とする．
+\color{red}{ここで，$X = Y \overset{\mathrm{def}}{=} \forall i. \ i \in \mathbb{N} \Rightarrow 1 \leq i \leq n \Rightarrow x_{i} = y_{i}$}\footnote{$X = Y$の定義はThe Art of Computer Programming自体には載っていないので，それらしいものを勝手に定義した．}
+\end{proposition}
+
+\begin{proof}
+\begin{equation}
+\forall X. \ \forall Y. \ \ X \in T_{n} \Rightarrow Y \in T_{n} \Rightarrow X \lhd_{n} Y \Rightarrow Y \lhd_{n} X \Rightarrow X = Y
+ \label{eq:two}
+\end{equation}
+を示す．\par
+\noindent $T_{n}$の任意の要素$X^{'},Y^{'}$をとる．
+\begin{equation}
+X^{'} \lhd_{n} Y^{'} \Rightarrow Y^{'} \lhd_{n} X^{'} \Rightarrow X^{'} = Y^{'}
+ \label{eq:two'}
+\end{equation}
+を示す．\par
+\noindent (\ref{eq:two'})を示すには$X^{'} \lhd_{n} Y^{'}$と$Y^{'} \lhd_{n} X^{'}$を仮定して$X^{'} = Y^{'}$を示せば充分である．
+\begin{equation}
+ X^{'} \lhd_{n} Y^{'} \hspace{5mm} \Biggl( \exists k. \, k \in \mathbb{N} \land (1 \leq k \leq n) \land \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < k) \Rightarrow  x_{j} = y_{j} \Bigr) \land \Bigl( x_{k} \prec y_{k} \Bigr) \Biggr)
+ \label{eq:xleqy}
+\end{equation}
+\begin{equation}
+ Y^{'} \lhd_{n} X^{'} \hspace{5mm} \Biggl( \exists l. \, l \in \mathbb{N} \land (1 \leq l \leq n) \land \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < l) \Rightarrow  y_{j} = x_{j} \Bigr) \land \Bigl( y_{l} \prec x_{l} \Bigr) \Biggr)
+ \label{eq:yleqx} 
+\end{equation}
+を仮定する．
+\begin{equation}
+ X^{'} = Y^{'}
+\end{equation}
+を示す． \par
+\noindent 仮定(\ref{eq:xleqy}),(\ref{eq:yleqx})より，$k = l = n$？なので
+\begin{equation}
+\Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < n) \Rightarrow  y_{j} = x_{j} \Bigr) \land \Bigl( x_{n} \prec y_{n} \ \land \ y_{n} \prec x_{n} \Bigr)
+\end{equation}
+が成り立つ．\par
+\noindent !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! まだ$k = l = n$の所を証明できていません．!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+\begin{align*}
+ & \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < n) \Rightarrow  y_{j} = x_{j} \Bigr) \land \Bigl( x_{n} \prec y_{n} \ \land \ y_{n} \prec x_{n} \Bigr) \\
+\iff & \Bigl( \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j < n) \Rightarrow  y_{j} = x_{j} \Bigr) \land \Bigl( x_{n} = y_{n} \Bigr) \\
+\iff & \ \ \forall j. \ j \in \mathbb{N} \Rightarrow (1 \leq j \leq n) \Rightarrow  y_{j} = x_{j} \\
+\iff & \ \ X = Y
+\end{align*}
+よって，(\ref{eq:two'})が成り立つ．(\ref{eq:two'})で$X^{'}$と$Y^{'}$は任意であったので(\ref{eq:two})が示された．
+\end{proof}
+
+\end{document}
