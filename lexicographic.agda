@@ -2,7 +2,7 @@ module lexicographic where
 
 open import Data.Nat
 open import Data.List
-open import Relation.Binary.PropositionalEquality --using (_≡_ ; refl ; inspect)
+open import Relation.Binary.PropositionalEquality
 
 record well-order : Set1 where
   field
@@ -16,12 +16,6 @@ open import Data.Unit using (⊤ ; tt)
 open import Data.Empty
 open import Data.Bool
 
-_<=B_ : ℕ → ℕ → Bool
-zero  <=B _     = true
-suc x <=B zero  = false
-suc x <=B suc y = x <=B y
-
--- changed following definition from function to data-type.
 data _<=_ : List ℕ → List ℕ → Set where
   0≤0  : [] <= []
   0≤xs : {x : ℕ} {xs : List ℕ} → [] <= (x ∷ xs)
