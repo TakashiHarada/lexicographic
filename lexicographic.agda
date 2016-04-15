@@ -1,6 +1,7 @@
 module lexicographic where
 
 open import Data.Nat
+
 open import Data.List
 open import Relation.Binary.PropositionalEquality --using (_≡_ ; refl ; inspect)
 
@@ -16,35 +17,32 @@ open import Data.Unit using (⊤ ; tt)
 open import Data.Empty
 open import Data.Bool
 
-_<=B_ : ℕ → ℕ → Bool
-zero  <=B _     = true
-suc x <=B zero  = false
-suc x <=B suc y = x <=B y
-
 -- changed following definition from function to data-type.
 data _<=_ : List ℕ → List ℕ → Set where
-  0≤0  : [] <= []
-  0≤xs : {x : ℕ} {xs : List ℕ} → [] <= (x ∷ xs)
-  xs≤ys : {x y : ℕ}{xs ys : List ℕ} → xs <= ys → x ≤′ y → (x ∷ xs) <= (y ∷ ys) -- ≤′ is useful 
-{-
-[] <= [] = ⊤
-[] <= (x ∷ xs) = ⊤
-(x ∷ xs) <= [] = ⊥
-(x ∷ xs) <= (y ∷ ys) with x <=B y
-(x ∷ xs) <= (y ∷ ys) | true = xs <= ys
-(x ∷ xs) <= (y ∷ ys) | false = ⊥
--}
+  0≤0   : [] <= []
+  0≤xs  : {x : ℕ} {xs : List ℕ} → [] <= (x ∷ xs)
+  xs≤ys : {x y : ℕ} {xs ys : List ℕ} → xs <= ys → x ≤′ y → (x ∷ xs) <= (y ∷ ys) -- ≤′ is useful 
+
 lemma1 : (xs : List ℕ) → xs <= xs
 lemma1 [] = 0≤0
 lemma1 (x ∷ xs)  = xs≤ys (lemma1 xs) ≤′-refl
 -- using ≤′, this proof is EXTREMELY easy!
 
 lemma2 : (x y : List ℕ) → x <= y → y <= x → x ≡ y
-lemma2 x y prf1 prf2 = {!!}
+lemma2 [] [] 0≤0 0≤0 = refl
+lemma2 [] ._ 0≤xs ()
+lemma2 (x ∷ xs) (y ∷ ys) (xs≤ys prf1 t) (xs≤ys prf2 u) = {!!}
 
+lemma3 : (x y z : List ℕ) → x <= y → y <= z → x <= z
+lemma3 []       _        []       prf1 prf2 = 0≤0
+lemma3 []       _        (z ∷ zs) prf1 prf2 = 0≤xs
+lemma3 (x ∷ xs) []       []       prf1 prf2 = {!!}
+lemma3 (x ∷ xs) []       (z ∷ zs) prf1 prf2 = {!!}
+lemma3 (x ∷ xs) (y ∷ ys) []       prf1 prf2 = {!!}
+lemma3 (x ∷ xs) (y ∷ ys) (z ∷ zs) prf1 prf2 = {!!}
 
 --lexicographicℕ : ℕ → well-order
 lexicographicℕ : well-order
-lexicographicℕ = record { S = List ℕ ; _≺_ = _<=_ ; w-refl = lemma1 ; w-antisym = lemma2 ; w-trans = {!!} }
+lexicographicℕ = record { S = List ℕ ; _≺_ = _<=_ ; w-refl = lemma1 ; w-antisym = lemma2 ; w-trans = lemma3 }
 
 -- Ctr-u Ctr-c Ctr-,
